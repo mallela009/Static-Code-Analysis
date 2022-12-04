@@ -1,25 +1,18 @@
-pipeline{
-agent any
-stages{
-stage("checkout"){
-steps{
-checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [],
- userRemoteConfigs: [[url: 'https://github.com/mallela009/Static-Code-Analysis.git']]])
-}
-}
-stage('Build') { 
-steps { 
-       echo 'mvn clean install' 
-            }
-        }
-stage('Test'){
+pipeline {
+    agent any
+    stages {
+        stage('SCM') {
             steps {
-                echo 'mvn test'
-               
+                git url: 'https://github.com/foo/bar.git'
             }
         }
- withSonarQubeEnv(installationName: ‘SonarQube-Server’, credentialsId: ‘SonarToken’) {
-bat(script: ‘D://Softwares//sonar-scanner-cli//sonar-scanner-4.3.0.2102-windows//bin//sonar-scanner -Dproject.settings=sonar-project.properties’, label: ‘SonarQube Analysis’)
-}
-}
-}
+        stage('build && SonarQube analysis') {
+            steps {
+                withSonarQubeEnv('My SonarQube Server') {
+                    // Optionally use a Maven environment you've configured already
+                    withMaven(maven:'Maven 3.5') {
+                        sh 'mvn clean package sonar:sonar'
+                    }
+                }
+            }
+        }
