@@ -14,7 +14,7 @@ steps {
         }
 stage('Test'){
             steps {
-                sh 'make check'
+                echo 'mvn test'
                
             }
         }
