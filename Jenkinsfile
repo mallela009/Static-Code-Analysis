@@ -18,5 +18,8 @@ stage('Test'){
                
             }
         }
+ withSonarQubeEnv(installationName: ‘SonarQube-Server’, credentialsId: ‘SonarToken’) {
+bat(script: ‘D://Softwares//sonar-scanner-cli//sonar-scanner-4.3.0.2102-windows//bin//sonar-scanner -Dproject.settings=sonar-project.properties’, label: ‘SonarQube Analysis’)
+}
 }
 }
