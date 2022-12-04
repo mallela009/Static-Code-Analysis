@@ -12,10 +12,11 @@ steps {
        echo 'mvn clean install' 
             }
         }
-stage("unit test"){
-steps{
-step([$class: 'JUnitResultArchiver', checksName: '', testResults: 'myproject/target/test-reports/*.xml'])
-}
-}
+stage('Test'){
+            steps {
+                sh 'make check'
+               
+            }
+        }
 }
 }
